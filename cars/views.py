@@ -4,7 +4,8 @@ from .models import Car
 
 # Create your views here.
 def cars(request):
-    return render(request, 'cars/cars.html')
+    cars = Car.objects.order_by('-created_date')
+    return render(request, 'cars/cars.html', {"cars": cars})
 
 
 def car_detail(request, id):
