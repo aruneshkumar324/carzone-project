@@ -8,7 +8,21 @@ def home(request):
     feature_cars = Car.objects.order_by('-created_date').filter(is_featured=True)
     all_cars = Car.objects.order_by('-created_date')
 
-    data = {"teams": teams, "feature_cars": feature_cars, "all_cars":all_cars}
+    model_fields = Car.objects.values_list('model', flat=True).distinct()
+    location_field = Car.objects.values_list('city', flat=True).distinct()
+    year_field = Car.objects.values_list('year', flat=True).distinct()
+    body_style_field = Car.objects.values_list('body_style', flat=True).distinct()
+
+
+    data = {
+        "teams": teams,
+        "feature_cars": feature_cars,
+        "all_cars":all_cars, 
+        "model_fields": model_fields,
+        "location_field": location_field,
+        "year_field": year_field,
+        "body_style_field": body_style_field,
+    }
     return render(request, 'pages/home.html', data)
 
 
