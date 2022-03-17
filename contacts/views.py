@@ -17,6 +17,13 @@ def inquiry(request):
         message = request.POST['message']
         user_id = request.POST['user_id']
 
+        if request.user.is_authenticated:
+            user_id = request.user.id
+            has_contacted = Contact.objects.filter(user_id=user_id, car_id=car_id)
+            if has_contacted:
+                messages.error(request, 'You have already made inquery for this car')
+                return redirect('/cars/'+car_id)
+
         data = Contact(first_name=first_name, last_name=last_name, car_id=car_id, customer_need=customer_need, car_title=car_title, city=city, state=state, email=email, phone=phone, message=message, user_id=user_id)
 
         data.save()
